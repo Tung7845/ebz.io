@@ -1,0 +1,23 @@
+name: Demo OpenAPI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run Swagger UI
+      run: |
+        docker run -d -p 8080:8080 -e SWAGGER_JSON=/swagger/openapi.yml \
+          -v ${{ github.workspace }}/openapi.yml:/swagger/openapi.yml \
+          swaggerapi/swagger-ui
+
+    - name: Show Swagger URL
+      run: echo "Swagger UI is running at http://localhost:8080"
